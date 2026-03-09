@@ -38,23 +38,22 @@ async def check_and_reply():
 
             msg = update.message
             user = msg.from_user
-            text = msg.text or msg.caption or "[медиа/стикер/гс]"
+            text = msg.text or msg.caption or "[медиа]"
 
-            # Отправляем короткий автоответ
+            # Отправляем автоответ
             await bot.send_message(
                 chat_id=msg.chat.id,
-                text="Люкс спит. 😴 Попробуйте позже."
+                text="😴 Люкс спит. Попробуйте позже."
             )
 
             # Пересылаем тебе в личку
             await bot.send_message(
                 chat_id=YOUR_USER_ID,
                 text=(
-                    f"📩 **Сообщение для Люкса (бот спит)**\n"
+                    f"📩 Сообщение для Люкса (бот спит)\n"
                     f"От: {user.first_name}\n"
                     f"Текст: {text}"
-                ),
-                parse_mode="Markdown"
+                )
             )
 
             if update.update_id > last_id:
@@ -68,5 +67,4 @@ async def main():
     await check_and_reply()
 
 if __name__ == "__main__":
-
     asyncio.run(main())
