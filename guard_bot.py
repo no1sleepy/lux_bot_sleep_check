@@ -43,8 +43,7 @@ async def check_and_reply():
             # Отправляем короткий автоответ
             await bot.send_message(
                 chat_id=msg.chat.id,
-                text="Люкс спит. 😴 
-Попробуйте позже."
+                text="Люкс спит. 😴 Попробуйте позже."
             )
 
             # Пересылаем тебе в личку
@@ -69,4 +68,5 @@ async def main():
     await check_and_reply()
 
 if __name__ == "__main__":
+
     asyncio.run(main())
