@@ -1,0 +1,25 @@
+name: Keepalive Workflow
+
+on:
+  schedule:
+    # Запускается 1 и 15 числа каждого месяца
+    - cron: '0 0 1,15 * *'
+  workflow_dispatch: # Можно запускать вручную
+
+permissions:
+  actions: write # Даём права на включение workflow
+
+jobs:
+  keepalive-job:
+    name: Keep Repository Alive
+    runs-on: ubuntu-latest
+    steps:
+      - name: Re-enable scheduled workflows
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          echo "🔄 Проверяю и включаю основной workflow..."
+          # Активируем оба workflow
+          gh workflow enable guard.yml
+          echo "✅ Guard workflow включён"
