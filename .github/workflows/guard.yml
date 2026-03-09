@@ -1,24 +1,33 @@
 name: Lux Sleep Guard
 
 on:
+  workflow_dispatch:  # только ручной запуск (для теста)
   schedule:
-    - cron: '*/5 * * * *'
-  workflow_dispatch:
+    - cron: '*/10 * * * *'  # каждые 10 минут
 
 jobs:
-  guard:
+  check-messages:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
+      
       - name: Install dependencies
-        run: pip install python-telegram-bot==20.7
-      - name: Run guard
+        run: |
+          python -m pip install --upgrade pip
+          pip install python-telegram-bot==20.7
+      
+      - name: Run guard bot
         env:
           SLEEP_BOT_TOKEN: ${{ secrets.SLEEP_BOT_TOKEN }}
           YOUR_USER_ID: ${{ secrets.YOUR_USER_ID }}
           MAIN_BOT_USERNAME: ${{ secrets.MAIN_BOT_USERNAME }}
-        run: python guard_bot.py
+        run: |
+          echo "🟢 Запуск guard_bot.py"
+          python guard_bot.py
+          echo "✅ Выполнение завершено"
